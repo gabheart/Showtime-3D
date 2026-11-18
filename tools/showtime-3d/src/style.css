@@ -1,0 +1,316 @@
+:root {
+  --bg-void: #08080d;
+  --glass-bg: rgba(12, 13, 22, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --accent-cyan: #38bdf8;
+  --accent-magenta: #f43f5e;
+  --accent-amber: #f59e0b;
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --font-display: 'Orbitron', system-ui, -apple-system, sans-serif;
+  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, #131526 0%, var(--bg-void) 75%);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+#app {
+  position: relative;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+/* Vinheta sutil de cinema/show nas bordas do palco */
+.showtime-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    transparent 58%,
+    rgba(4, 4, 8, 0.68) 100%
+  );
+  z-index: 5;
+}
+
+/* Camada raiz do HUD (não intercepta cliques no 3D) */
+.showtime-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 24px;
+  transition: opacity 0.35s ease;
+}
+
+.showtime-hud.is-hidden .showtime-hud-chrome {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* Barra superior */
+.showtime-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.showtime-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.showtime-live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent-magenta);
+  box-shadow: 0 0 12px var(--accent-magenta);
+  animation: pulse-live 1.6s infinite ease-in-out;
+}
+
+.showtime-hud.is-ready .showtime-live-dot {
+  background: #10b981;
+  box-shadow: 0 0 12px #10b981;
+}
+
+.showtime-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  background: linear-gradient(90deg, #ffffff 0%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.showtime-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+/* Botão interativo discreto para alternar HUD */
+.showtime-toggle-btn {
+  pointer-events: auto;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.showtime-toggle-btn:hover {
+  color: var(--text-primary);
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(22, 25, 40, 0.85);
+}
+
+.showtime-kbd {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+/* Card central de carregamento (some suavemente quando o show começa) */
+.showtime-loader-card {
+  align-self: center;
+  width: min(440px, 92vw);
+  padding: 24px 26px;
+  background: rgba(10, 11, 19, 0.86);
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  border-radius: 16px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.75),
+    0 0 40px rgba(56, 189, 248, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: opacity 0.55s ease, transform 0.55s ease, visibility 0.55s;
+}
+
+.showtime-hud.is-ready .showtime-loader-card {
+  opacity: 0;
+  transform: translateY(14px) scale(0.97);
+  visibility: hidden;
+}
+
+.showtime-loader-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.showtime-loader-label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+/* Equalizador de áudio animado */
+.showtime-eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+}
+
+.showtime-eq span {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent-cyan), var(--accent-magenta));
+  animation: eq-bounce 0.9s infinite ease-in-out;
+}
+
+.showtime-eq span:nth-child(2) { animation-delay: 0.15s; }
+.showtime-eq span:nth-child(3) { animation-delay: 0.3s; }
+.showtime-eq span:nth-child(4) { animation-delay: 0.1s; }
+.showtime-eq span:nth-child(5) { animation-delay: 0.25s; }
+
+.showtime-status-text {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+  min-height: 1.4em;
+}
+
+.showtime-hud.has-error .showtime-loader-card {
+  border-color: rgba(244, 63, 94, 0.55);
+}
+
+.showtime-hud.has-error .showtime-status-text {
+  color: #fda4af;
+}
+
+/* Barra de progresso */
+.showtime-progress-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.showtime-progress-fill {
+  width: 8%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.6);
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Rodapé com status compacto e dicas de câmera */
+.showtime-bottombar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.showtime-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.showtime-pill strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.showtime-controls-hint {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+@keyframes pulse-live {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.55; }
+}
+
+@keyframes eq-bounce {
+  0%, 100% { transform: scaleY(0.28); }
+  50% { transform: scaleY(1); }
+}
+
+@media (max-width: 640px) {
+  .showtime-hud {
+    padding: 14px;
+  }
+  .showtime-controls-hint {
+    display: none;
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Permissões mínimas: só a janela principal, sem plugins de fs/shell/http. Os comandos próprios (save_session_telemetry) são liberados pelo invoke_handler.",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}
