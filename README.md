@@ -1,5 +1,8 @@
 # **Relatório técnico — Bootstrap e orquestração do Showtime 3D**
 
+Alunos Paulo Felipe Santos de A. Batista, Gabriel Borges Santos, Derick Setubal
+
+
 **Projeto:** [Showtime-3D — GitHub](https://github.com/gabheart/Showtime-3D.git?utm_source=chatgpt.com)\
 **Tecnologias:** Bash, TypeScript, Three.js, Vite, Rust e WebAssembly\
 **Tema:** Funcionamento do Bootstrap e os componentes que ele organiza e prepara.
