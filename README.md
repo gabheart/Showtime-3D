@@ -1,271 +1,222 @@
-# **Relatório técnico — Bootstrap e orquestração do Showtime 3D**
+# Showtime 3D — Bootstrap e Orquestração
 
-Alunos Paulo Felipe Santos de A. Batista, Gabriel Borges Santos, Derick Setubal
+O **Showtime 3D** é um projeto de ambiente tridimensional interativo desenvolvido com Three.js e TypeScript. Sua estrutura foi preparada para reunir cenário 3D, personagens, músicos, instrumentos, animações, efeitos sonoros e elementos de interface.
 
+Este README apresenta o funcionamento do script `bootstrap.sh`, responsável por preparar a estrutura inicial do projeto, configurar as tecnologias utilizadas e organizar os módulos que serão desenvolvidos.
 
-**Projeto:** [Showtime-3D — GitHub](https://github.com/gabheart/Showtime-3D.git?utm_source=chatgpt.com)\
-**Tecnologias:** Bash, TypeScript, Three.js, Vite, Rust e WebAssembly\
-**Tema:** Funcionamento do Bootstrap e os componentes que ele organiza e prepara.
+## Tecnologias utilizadas
 
-## **1. Introdução**
+| Tecnologia | Versão declarada | Finalidade |
+|---|---:|---|
+| Bash | — | Execução do script de inicialização. |
+| Three.js | `^0.180.0` | Renderização e manipulação de objetos 3D. |
+| TypeScript | `~5.9.0` | Desenvolvimento com tipagem estática. |
+| Vite | `^7.0.0` | Servidor de desenvolvimento e geração da versão de produção. |
+| `@types/three` | `^0.180.0` | Definições de tipos para o Three.js. |
+| Rust | — | Preparação dos cálculos relacionados à multidão. |
+| WebAssembly | — | Tecnologia prevista para uma futura integração entre Rust e JavaScript. |
 
-O Showtime 3D é um projeto de ambiente tridimensional interativo desenvolvido com Three.js e TypeScript. Sua estrutura contempla a renderização de um cenário 3D, personagens, músicos, instrumentos, animações, efeitos sonoros e elementos de interface.
+## Bootstrap: preparação do projeto
 
-O arquivo `bootstrap.sh` funciona como um **script de inicialização e preparação do ambiente de desenvolvimento**.
+O arquivo `bootstrap.sh` automatiza a configuração inicial do Showtime 3D. Entre suas tarefas estão:
 
-Seu objetivo é automatizar a criação da estrutura básica do projeto, configurar as tecnologias necessárias, instalar dependências e preparar os diretórios para o desenvolvimento dos componentes.
+- criar a pasta principal `showtime-3d`;
+- gerar os diretórios para os módulos e recursos do projeto;
+- criar arquivos de configuração do npm, TypeScript e HTML;
+- preparar os arquivos iniciais em TypeScript e Rust;
+- instalar as dependências JavaScript com `npm install`.
 
-É importante diferenciar duas responsabilidades:
+O Bootstrap prepara a infraestrutura de desenvolvimento, mas não implementa automaticamente todos os recursos do jogo.
 
-- **Bootstrap:** prepara a estrutura e o ambiente necessários para desenvolver e executar o sistema.
-- **Engine:** coordena o funcionamento do ambiente 3D durante a execução da aplicação.
+### Estrutura criada
 
-O Bootstrap, portanto, não é responsável por executar continuamente as animações, movimentar personagens ou processar colisões. Essas atividades pertencem aos módulos do motor do jogo.
-
-## **2. O que o Bootstrap faz?**
-
-O script `bootstrap.sh` automatiza a preparação inicial do Showtime 3D. Ao ser executado, ele realiza uma sequência de operações para criar uma base organizada de desenvolvimento.
-
-### **2.1 Criação do projeto**
-
-O script define o nome do projeto:
-
-```
-PROJECT="showtime-3d"
-
-mkdir -p "$PROJECT"
-cd "$PROJECT"
-```
-
-Esses comandos criam a pasta principal e fazem com que as próximas operações aconteçam dentro dela.
-
-O comando `mkdir -p` também evita erros quando o diretório já existe.
-
-### **2.2 Criação dos diretórios**
-
-O Bootstrap cria a seguinte estrutura:
-
-**showtime-3d/**
-
-ESTRUTURA GERADA PELO BOOTSTRAP
-
-├── public/\
-│   └── assets/\
-│       ├── characters/\
-│       ├── animations/\
-│       └── instruments/\
-├── src/\
-│   ├── core/\
-│   ├── world/\
-│   ├── characters/\
-│   ├── crowd/\
-│   ├── audio/\
-│   ├── ui/\
-│   ├── main.ts\
-│   └── style.css\
-├── rust/\
-│   └── crowd-engine/\
-│       ├── Cargo.toml\
-│       └── src/lib.rs\
-├── index.html\
-├── package.json\
+```text
+showtime-3d/
+├── public/
+│   └── assets/
+│       ├── characters/
+│       ├── animations/
+│       └── instruments/
+├── src/
+│   ├── core/
+│   ├── world/
+│   ├── characters/
+│   ├── crowd/
+│   ├── audio/
+│   ├── ui/
+│   ├── main.ts
+│   └── style.css
+├── rust/
+│   └── crowd-engine/
+│       ├── Cargo.toml
+│       └── src/
+│           └── lib.rs
+├── index.html
+├── package.json
 └── tsconfig.json
-
-Cada diretório possui uma responsabilidade:
-
-| Diretório            | Função                                                       |
-| -------------------- | ------------------------------------------------------------ |
-| `core/`              | Motor principal, renderização, câmera e loop de atualização. |
-| `world/`             | Elementos físicos e visuais do cenário.                      |
-| `characters/`        | Personagens, instrumentos e animações.                       |
-| `crowd/`             | Componentes relacionados aos figurantes.                     |
-| `audio/`             | Sistema de áudio e análise sonora.                           |
-| `ui/`                | Interface visual e informações do jogo.                      |
-| `public/assets/`     | Armazenamento de modelos, instrumentos e animações.          |
-| `rust/crowd-engine/` | Código Rust preparado para uso com WebAssembly.              |
-
-## **3. Tudo que o Bootstrap está orquestrando**
-
-FLUXO DE PREPARAÇÃO DO PROJETO
-
-**bootstrap.sh**
-
-Script Bash de inicialização
-
-Estrutura de pastas
-
-src, assets e rust
-
-Configuração npm
-
-package.json
-
-Configuração TS
-
-tsconfig.json
-
-Entrada web
-
-index.html e main.ts
-
-Base Rust
-
-Cargo.toml e lib.rs
-
-Módulos do jogo
-
-Arquivos TypeScript vazios
-
-**npm install**
-
-Instalação das dependências JavaScript
-
-**Estrutura inicial preparada**
-
-Aguardando implementação dos módulos
-
-### **3.1 Gerenciamento de dependências**
-
-O Bootstrap cria automaticamente o arquivo `package.json`, definindo as ferramentas utilizadas no desenvolvimento.
-
-| Tecnologia   | Versão definida | Finalidade                                                   |
-| ------------ | --------------- | ------------------------------------------------------------ |
-| Three.js     | `^0.180.0`      | Renderização e manipulação de objetos 3D.                    |
-| TypeScript   | `~5.9.0`        | Desenvolvimento com tipagem estática.                        |
-| Vite         | `^7.0.0`        | Servidor de desenvolvimento e geração da versão de produção. |
-| @types/three | `^0.180.0`      | Definições de tipos para Three.js.                           |
-
-O script também configura três comandos npm:
-
-- `npm run dev`: inicia o ambiente de desenvolvimento.
-- `npm run build`: executa a verificação TypeScript e a compilação de produção.
-- `npm run preview`: permite visualizar a versão compilada.
-
-Ao final, executa `npm install`, responsável por instalar as dependências declaradas.
-
-### **3.2 Configuração do TypeScript**
-
-O arquivo `tsconfig.json` é criado com configurações que incluem:
-
-- Compilação direcionada ao padrão ES2022.
-- Utilização de módulos ESNext.
-- Resolução de módulos compatível com ferramentas de empacotamento.
-- Verificação rigorosa de tipos com `strict: true`.
-- Configuração `noEmit: true`, evitando geração direta de JavaScript pelo TypeScript.
-
-Dessa forma, o TypeScript verifica o código enquanto o Vite fica responsável por gerar os arquivos destinados ao navegador.
-
-### **3.3 Preparação da interface HTML**
-
-O Bootstrap gera um `index.html` contendo um elemento `div` com o identificador `app`.
-
-Esse elemento funciona como ponto de montagem da aplicação.
-
-Também cria o arquivo `main.ts`, que importa o CSS e chama:
-
-```
-createShowtime();
 ```
 
-Essa chamada representa a entrada do motor principal. Entretanto, o Bootstrap cria inicialmente o arquivo `engine.ts` vazio; portanto, o motor ainda precisa ser implementado para que a aplicação funcione.
+### Função dos diretórios
 
-### **3.4 Preparação do motor tridimensional**
+| Diretório | Responsabilidade |
+|---|---|
+| `src/core/` | Motor principal, renderização, câmera e loop de atualização. |
+| `src/world/` | Elementos físicos e visuais do cenário. |
+| `src/characters/` | Personagens, instrumentos e animações. |
+| `src/crowd/` | Componentes relacionados aos figurantes. |
+| `src/audio/` | Sistema de áudio e análise sonora. |
+| `src/ui/` | Interface visual e informações do jogo. |
+| `public/assets/` | Armazenamento de modelos, instrumentos e animações. |
+| `rust/crowd-engine/` | Código Rust preparado para uso com WebAssembly. |
 
-O Bootstrap cria arquivos destinados às seguintes responsabilidades:
+## Configurações e módulos preparados
 
-| Módulo          | Responsabilidade prevista                |
-| --------------- | ---------------------------------------- |
-| `engine.ts`     | Coordenação central do sistema 3D.       |
-| `renderer.ts`   | Configuração da renderização WebGL.      |
-| `camera.ts`     | Controle e posicionamento da câmera.     |
-| `loop.ts`       | Atualização contínua dos quadros.        |
-| `pub.ts`        | Construção do ambiente da casa de shows. |
-| `stage.ts`      | Estrutura do palco.                      |
-| `bar.ts`        | Estrutura do bar.                        |
-| `dancefloor.ts` | Área da pista de dança.                  |
-| `lighting.ts`   | Iluminação do cenário.                   |
+### Dependências e comandos npm
 
-**Observação:** o Bootstrap apenas cria esses arquivos vazios. A implementação de cada componente acontece posteriormente.
+O `package.json` declara as dependências e os comandos utilizados no projeto:
 
-### **3.5 Preparação dos personagens e instrumentos**
+| Comando | Função |
+|---|---|
+| `npm run dev` | Inicia o ambiente de desenvolvimento. |
+| `npm run build` | Executa a verificação TypeScript e a compilação de produção. |
+| `npm run preview` | Permite visualizar a versão compilada. |
 
-A estrutura inclui arquivos destinados ao carregamento e gerenciamento de personagens e instrumentos.
+O Bootstrap executa `npm install` para instalar as dependências declaradas no `package.json`.
 
-O objetivo dessa separação é permitir que músicos, modelos tridimensionais e animações sejam desenvolvidos de maneira independente.
+### TypeScript
 
-O Bootstrap também cria os diretórios para armazenar arquivos de recursos, como modelos FBX e GLB, mas não realiza automaticamente o download desses modelos.
+O arquivo `tsconfig.json` é criado com as seguintes configurações principais:
 
-### **3.6 Preparação do sistema de áudio**
+- padrão de compilação ES2022;
+- módulos ESNext;
+- resolução de módulos compatível com ferramentas de empacotamento;
+- verificação rigorosa de tipos (`strict: true`);
+- `noEmit: true`, que impede a geração direta de arquivos JavaScript pelo TypeScript.
 
-O script cria os arquivos:
+Assim, o TypeScript realiza a verificação do código e o Vite fica responsável pela geração dos arquivos destinados ao navegador.
 
-- `audio-engine.ts`
-- `analyzer.ts`
-- `beat-detector.ts`
+### Entrada da aplicação
 
-Eles são destinados, respectivamente, à implementação do áudio, à análise de sinais sonoros e à detecção de batidas.
+O arquivo `index.html` contém o elemento `div` com o identificador `app`, que funciona como ponto de montagem da aplicação. O arquivo `src/main.ts` importa o CSS e chama `createShowtime()`, que representa a entrada do motor principal.
 
-Essa organização permite desenvolver posteriormente funcionalidades como sincronização de animações e efeitos visuais com a música.
+**Atenção:** o Bootstrap cria inicialmente o arquivo `engine.ts` vazio. Portanto, a chamada `createShowtime()` depende da implementação posterior do motor para que a aplicação funcione.
 
-### **3.7 Preparação do Rust e WebAssembly**
+### Motor tridimensional e cenário
 
-Uma parte importante do Bootstrap é a geração do módulo `crowd-engine`, escrito em Rust.
+O Bootstrap prepara arquivos destinados às seguintes responsabilidades:
 
-O arquivo `Cargo.toml` declara o pacote Rust e sua dependência `wasm-bindgen`, utilizada para facilitar a comunicação entre Rust e JavaScript por meio de WebAssembly.
+| Módulo | Responsabilidade prevista |
+|---|---|
+| `engine.ts` | Coordenação central do sistema 3D. |
+| `renderer.ts` | Configuração da renderização WebGL. |
+| `camera.ts` | Controle e posicionamento da câmera. |
+| `loop.ts` | Atualização contínua dos quadros. |
+| `pub.ts` | Construção do ambiente da casa de shows. |
+| `stage.ts` | Estrutura do palco. |
+| `bar.ts` | Estrutura do bar. |
+| `dancefloor.ts` | Área da pista de dança. |
+| `lighting.ts` | Iluminação do cenário. |
 
-O código `lib.rs` implementa a estrutura `CrowdEngine`, que possui:
+Esses arquivos são criados como estrutura inicial. A implementação de cada componente deve acontecer posteriormente.
 
-| Elemento   | Função                                                        |
-| ---------- | ------------------------------------------------------------- |
-| `count`    | Armazena a quantidade de integrantes da multidão.             |
-| `time`     | Mantém o tempo acumulado da simulação.                        |
-| `energy`   | Representa o nível de energia utilizado nos movimentos.       |
-| `update()` | Atualiza o tempo e a energia.                                 |
-| `get_x()`  | Calcula uma coordenada horizontal X.                          |
-| `get_z()`  | Calcula uma coordenada horizontal Z.                          |
-| `get_y()`  | Calcula uma oscilação vertical baseada no tempo e na energia. |
+### Personagens, instrumentos e recursos
 
-O objetivo dessa estrutura é preparar cálculos relacionados à movimentação de figurantes.
+A estrutura inclui arquivos e diretórios destinados ao carregamento e gerenciamento de personagens, instrumentos e animações. Os recursos podem ser armazenados em `public/assets/`, incluindo modelos nos formatos FBX e GLB.
 
-**Limitação importante:** o Bootstrap não compila o módulo Rust em WebAssembly e não integra automaticamente esse módulo ao Three.js. Ele apenas prepara o código e a configuração necessários para uma futura integração.
+O Bootstrap cria os diretórios necessários, mas não realiza automaticamente o download desses modelos.
 
-## **4. Relação entre Bootstrap e Engine**
+### Sistema de áudio
 
-| Bootstrap                          | Engine                                          |
-| ---------------------------------- | ----------------------------------------------- |
-| Executado para preparar o projeto. | Executado quando a aplicação é iniciada.        |
-| Cria diretórios e arquivos.        | Gerencia os componentes do jogo.                |
-| Instala dependências.              | Atualiza personagens e cenário.                 |
-| Configura TypeScript e Vite.       | Coordena renderização, áudio e interações.      |
-| Prepara o módulo Rust.             | Pode integrar sistemas de multidão e animações. |
-| Não renderiza o cenário.           | Controla a experiência 3D em tempo real.        |
+São preparados os arquivos:
 
-Essa separação é importante porque demonstra que a orquestração inicial do ambiente e a orquestração do funcionamento do jogo são processos diferentes.
+- `audio-engine.ts`: implementação do sistema de áudio;
+- `analyzer.ts`: análise de sinais sonoros;
+- `beat-detector.ts`: detecção de batidas.
 
-## **5. Pontos de atenção identificados**
+Esses módulos permitem desenvolver posteriormente funcionalidades como a sincronização de animações e efeitos visuais com a música.
 
-Na análise do arquivo `bootstrap.sh` fornecido, foram identificadas algumas limitações técnicas:
+### Rust e WebAssembly
 
-**Sobrescrita de configurações:** o script utiliza redirecionamento com `>` para criar arquivos como `package.json`, `index.html` e `main.ts`. Se for executado novamente dentro de uma estrutura existente, poderá sobrescrever esses arquivos.
+O Bootstrap também prepara o módulo `crowd-engine`, escrito em Rust. O arquivo `Cargo.toml` declara o pacote e a dependência `wasm-bindgen`, utilizada para facilitar a comunicação entre Rust e JavaScript por meio de WebAssembly.
 
-**Arquivos funcionais vazios:** os módulos criados com `touch` não possuem implementação inicial. Por isso, executar o Bootstrap não significa que o jogo já estará pronto para funcionar.
+O arquivo `lib.rs` contém a estrutura `CrowdEngine`, com os seguintes elementos:
 
-**Ausência de compilação Rust:** o código do `CrowdEngine` é gerado, mas não existe uma etapa que execute a compilação para WebAssembly.
+| Elemento | Função |
+|---|---|
+| `count` | Armazena a quantidade de integrantes da multidão. |
+| `time` | Mantém o tempo acumulado da simulação. |
+| `energy` | Representa o nível de energia utilizado nos movimentos. |
+| `update()` | Atualiza o tempo e a energia. |
+| `get_x()` | Calcula uma coordenada horizontal X. |
+| `get_z()` | Calcula uma coordenada horizontal Z. |
+| `get_y()` | Calcula uma oscilação vertical baseada no tempo e na energia. |
 
-**Dependência do ambiente:** o script exige Bash, Node.js e npm disponíveis para executar todas as etapas.
+Essa estrutura prepara cálculos relacionados à movimentação dos figurantes. Entretanto, o Bootstrap não compila o módulo Rust para WebAssembly nem realiza sua integração automática com o Three.js.
 
-**Diferença entre versões:** o Bootstrap analisado declara Vite 7, enquanto o log de compilação apresentado anteriormente utiliza Vite 6.4.6. Isso indica uma diferença de configuração entre os materiais analisados, sem necessariamente representar um erro.
+## Fluxo de preparação
 
-## **6. Conclusão**
+```text
+bootstrap.sh
+     ↓
+Criação da estrutura de pastas
+     ↓
+Configuração do npm e do TypeScript
+     ↓
+Criação da entrada web (index.html e main.ts)
+     ↓
+Preparação dos módulos TypeScript e Rust
+     ↓
+npm install
+     ↓
+Estrutura inicial pronta para receber as implementações
+```
 
-O `bootstrap.sh` do Showtime 3D atua como um **automatizador da configuração inicial do projeto**, organizando os diretórios, criando arquivos de configuração, preparando módulos TypeScript e Rust e instalando as dependências necessárias.
+## Bootstrap e Engine: qual é a diferença?
 
-Sua principal contribuição é reduzir o trabalho manual de preparação, estabelecer uma arquitetura modular e facilitar o início do desenvolvimento.
+| Bootstrap | Engine |
+|---|---|
+| É executado para preparar o projeto. | Atua quando a aplicação é iniciada. |
+| Cria diretórios e arquivos. | Gerencia os componentes do jogo. |
+| Instala dependências. | Atualiza personagens e cenário. |
+| Configura TypeScript e Vite. | Coordena renderização, áudio e interações. |
+| Prepara a base do módulo Rust. | Pode integrar sistemas de multidão e animações. |
+| Não renderiza o cenário. | Controla a experiência 3D em tempo real. |
 
-A orquestração realizada pelo Bootstrap abrange a estrutura do motor 3D, os componentes do cenário, os personagens, a multidão, o áudio, a interface e a base de integração com WebAssembly.
+Em resumo, o **Bootstrap prepara a infraestrutura** do Showtime 3D, enquanto a **Engine coordena o funcionamento do ambiente tridimensional** durante a execução.
 
-Entretanto, ele não substitui o motor principal da aplicação e não implementa automaticamente todas essas funcionalidades.
+## Pontos de atenção
 
-**Em resumo, o Bootstrap prepara a infraestrutura do Showtime 3D; a Engine é responsável por colocar o ambiente tridimensional em funcionamento.**
+A análise do `bootstrap.sh` identificou algumas limitações que devem ser consideradas:
 
-Base documental: arquivo `bootstrap.sh` enviado anteriormente e estrutura de código compartilhada na conversa. O repositório GitHub foi indicado como referência, mas seu conteúdo remoto não pôde ser acessado nesta consulta; portanto, este relatório não confirma eventuais alterações publicadas posteriormente no GitHub.
+- **Sobrescrita de configurações:** o script utiliza o redirecionamento `>` para criar arquivos como `package.json`, `index.html` e `main.ts`. Uma nova execução pode sobrescrever arquivos existentes.
+- **Módulos inicialmente vazios:** os arquivos criados com `touch` não possuem implementação inicial. A execução do Bootstrap, por si só, não deixa o jogo pronto para funcionar.
+- **Sem compilação Rust:** o código de `CrowdEngine` é preparado, mas não há uma etapa para compilá-lo em WebAssembly.
+- **Dependências do ambiente:** a execução exige Bash, Node.js e npm disponíveis.
+- **Diferença entre versões:** o Bootstrap analisado declara Vite 7, enquanto o log de compilação apresentado no material de análise utiliza Vite 6.4.6. Isso indica uma diferença entre as configurações examinadas, mas não permite concluir, isoladamente, que exista um erro.
+
+## Contribuição dos integrantes
+
+### Gabriel Borges
+- Análise do script `bootstrap.sh` e das etapas de inicialização do projeto.
+- Identificação da criação dos diretórios e da organização dos arquivos.
+- Análise da estrutura geral do Showtime 3D e da preparação do ambiente.
+
+### Paulo Felipe
+- Pesquisa e descrição das configurações do projeto, incluindo npm e TypeScript.
+- Análise da estrutura HTML e da relação entre Bootstrap e Engine.
+- Elaboração e organização do README e das informações técnicas.
+
+### Dérick Sales
+- Análise dos módulos de personagens, multidão e sistema de áudio.
+- Estudo da preparação do módulo Rust e de sua relação prevista com WebAssembly.
+- Identificação das limitações técnicas e revisão das informações do projeto.
+
+## Conclusão
+
+O `bootstrap.sh` automatiza a configuração inicial do Showtime 3D, organizando diretórios, criando arquivos de configuração, preparando módulos TypeScript e Rust e instalando as dependências necessárias. Sua principal contribuição é reduzir o trabalho manual e estabelecer uma arquitetura modular para o desenvolvimento.
+
+O script, porém, não substitui a Engine nem implementa automaticamente as funcionalidades do ambiente 3D. Ele deixa a estrutura preparada para que os componentes sejam desenvolvidos e integrados posteriormente.
+
+---
+
+**Base desta documentação:** análise do arquivo `bootstrap.sh` e da estrutura de código compartilhada para o trabalho. As informações descrevem o material analisado e podem não refletir alterações posteriores no repositório remoto.
