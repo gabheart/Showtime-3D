@@ -2,7 +2,7 @@
 
 O **Showtime 3D** é um projeto de ambiente tridimensional interativo desenvolvido com Three.js e TypeScript. Sua estrutura foi preparada para reunir cenário 3D, personagens, músicos, instrumentos, animações, efeitos sonoros e elementos de interface.
 
-Este README apresenta o funcionamento do script `bootstrap.sh`, responsável por preparar a estrutura inicial do projeto, configurar as tecnologias utilizadas e organizar os módulos que serão desenvolvidos.
+Este relatório apresenta o funcionamento do script `bootstrap.sh`, responsável por preparar a estrutura inicial do projeto, configurar as tecnologias utilizadas e organizar os módulos que serão desenvolvidos.
 
 ## Tecnologias utilizadas
 
@@ -216,7 +216,3 @@ A análise do `bootstrap.sh` identificou algumas limitações que devem ser cons
 O `bootstrap.sh` automatiza a configuração inicial do Showtime 3D, organizando diretórios, criando arquivos de configuração, preparando módulos TypeScript e Rust e instalando as dependências necessárias. Sua principal contribuição é reduzir o trabalho manual e estabelecer uma arquitetura modular para o desenvolvimento.
 
 O script, porém, não substitui a Engine nem implementa automaticamente as funcionalidades do ambiente 3D. Ele deixa a estrutura preparada para que os componentes sejam desenvolvidos e integrados posteriormente.
-
----
-
-**Base desta documentação:** análise do arquivo `bootstrap.sh` e da estrutura de código compartilhada para o trabalho. As informações descrevem o material analisado e podem não refletir alterações posteriores no repositório remoto.
